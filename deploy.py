@@ -4,10 +4,20 @@ import os
 import ast
 import typing
 from requirement import install_requirement
+import argparse
 
+parser = argparse.ArgumentParser(description='Simple cli tool to deploy Django applications', add_help=False)
 
-path :str = sys.argv[1]
-project :str = sys.argv[2]
+parser.add_argument('Deploy')
+parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='                To use it just run deploy --path=folder containing your project --project= Your project name')
+parser.add_argument('--path', required=True, dest='             Path to the folder which your project is')
+parser.add_argument('--project', required=True, dest= '             The name of your project')
+
+input_args = parser.parse_args(sys.argv)
+
+path :str = input_args.path
+project :str = input_args.project
+
 
 project_path :Path = Path.joinpath(Path(path), project)
 if not Path.joinpath(project_path.absolute(), 'settings.py').exists():
