@@ -1,7 +1,7 @@
 import ast
 from utils import check_for_secrets, debug, secrets, allowed_hosts, template, add_some_required, database
 
-def change_settings(parse, env: dict):
+def change_settings(parse, env: dict) -> str:
     for line in parse.body:
         if type(line) == ast.Assign:
             for object in line.targets:

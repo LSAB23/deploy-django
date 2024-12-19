@@ -1,5 +1,9 @@
 import subprocess
 import os
+
+class DownloadingRequirementError(Exception):
+    pass
+
 def install_requirement(path):
     os.chdir(path)
     try:
@@ -14,6 +18,6 @@ def install_requirement(path):
         # install nginx
         subprocess.run('sudo apt install nginx'.split(), check=True)
     except subprocess.CalledProcessError as e:
-        raise (e, 'check and fix error with pip  this stackoverflow link could help https://stackoverflow.com/questions/75089137/error-failed-building-wheel-for-twisted-iocpsupport') # type: ignore
+        raise DownloadingRequirementError('check and fix error with pip  this stackoverflow link could help https://stackoverflow.com/questions/75089137/error-failed-building-wheel-for-twisted-iocpsupport')
 
     return 

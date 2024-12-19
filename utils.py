@@ -125,8 +125,6 @@ def add_some_required(file):
     conn_max_age =  ast.Assign(targets=[ast.Name(id='CONN_MAX_AGE', ctx=ast.Store())],value=ast.Constant(60), lineno=1)
 
     # add dotenv
-        # from dotenv import load_dotenv
-    # load_dotenv()
     import_dotenv = ast.Import([ast.alias('dotenv\n')])
     
     initalize_loadenv = ast.Name('dotenv.load_dotenv()', ast.Store(), lineno=0)
