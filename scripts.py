@@ -27,6 +27,7 @@ def make_migrations(project_path: Path, path: str, project: str, python:str) -> 
             if Path.joinpath(Path(path), 'manage.py').exists():
                 os.chdir(Path(path))
                 _make_migrations(python)
+    return 
 
                 
 # collect static
@@ -45,6 +46,7 @@ def collectstatic(project_path: Path, path: str, project: str, python :str):
             if Path.joinpath(Path(path), 'manage.py').exists():
                 os.chdir(Path(path))
                 _collectstatic(python)
+    return 
 # create .env file
 def create_env(env: dict) -> None:
     with open('.env', 'w') as env_setting:
@@ -52,6 +54,8 @@ def create_env(env: dict) -> None:
         for key,value in env.items():
             data += f"{key} = '{value}'\n"
         env_setting.write(data)
+    print('Created env file ')
+    return 
 
 # override the settings file
 def create_settings(settings :str) ->None:
@@ -59,14 +63,48 @@ def create_settings(settings :str) ->None:
         new_setting.seek(0)
         new_setting.write(settings)
         new_setting.truncate()
+    return 
 
 # start gunicorn
-def configure_gunicorn(path: str, project: str) -> None:
-    print('starting gunicorn')
-    os.system(f'gunicorn --workers=2 {project}.wsgi &')
+def configure_gunicorn(path: str, project: str, project_path :Path) -> None:
+    
+    print(f'Creating service file for {project} with the name {project}.service')
+    command_to_run = f'--workers={os.cpu_count()}  {project}.wsgi'
+    _path = Path.joinpath(Path(path), 'venv/bin/gunicorn')
     # add systemctl
+    # 
+    os.chdir(project_path)
+    # create service config
+    systemctl_service = f'''
+[Unit]
+Description= {project} project
+After=network.target
+
+[Service]
+User={getpass.getuser()}
+WorkingDirectory={Path(path)}
+ExecStart= {_path} {command_to_run}
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
+'''
+
+    
+    # create a systemd file for gunicorn
+    with open(f'{project}.service', 'w') as file:
+        file.seek(0)
+        file.write(systemctl_service[1::])
+    
+    os.system(f'sudo mv {project}.service /etc/systemd/system/')
+    
+    os.system(f'sudo systemctl enable {project}.service')
+    
+    os.system(f'sudo systemctl daemon-reload')
     
     print('gunicorn started')
+    return 
 
 # configure nginx
 def configure_nginx(base_dir :Path) -> None:
@@ -91,10 +129,10 @@ events {
     server {
         listen 80;
 
-        location /static/ {
+        location /static{
             alias  %s;
         }
-        location /media/ {
+        location /media{
             alias %s;
         }
 
@@ -119,4 +157,4 @@ events {
     os.system(f'sudo chown -R {user}:www-data .')
     print(os.system('sudo systemctl restart nginx'), 'starting nginx')
 
-    pass
+    return 

@@ -10,8 +10,8 @@ parser = argparse.ArgumentParser(description='Simple cli tool to deploy Django a
 
 parser.add_argument('Deploy')
 parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='                To use it just run deploy --path=folder containing your project --project= Your project name')
-parser.add_argument('--path', required=True, dest='             Path to the folder which your project is')
-parser.add_argument('--project', required=True, dest= '             The name of your project')
+parser.add_argument('--path', required=True)#, dest='             Path to the folder which your project is')
+parser.add_argument('--project', required=True)#, dest= '             The name of your project')
 
 input_args = parser.parse_args(sys.argv)
 
@@ -63,7 +63,7 @@ make_migrations(project_path, path, project, python)
 collectstatic(project_path, path, project,python)
 
 # configure gunicorn
-configure_gunicorn(path, project)
+configure_gunicorn(path, project, project_path)
 
 # configure nginx
 
