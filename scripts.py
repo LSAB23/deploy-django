@@ -1,6 +1,9 @@
 import os
 from pathlib import Path
+from utils import check_for_secrets, debug, secrets, allowed_hosts, template, add_some_required, database
 import getpass
+import ast
+
 
 def _make_migrations(python :str)->None:
     os.system(f'{python} manage.py makemigrations')
@@ -100,8 +103,11 @@ WantedBy=multi-user.target
     os.system(f'sudo mv {project}.service /etc/systemd/system/')
     
     os.system(f'sudo systemctl enable {project}.service')
-    
+
     os.system(f'sudo systemctl daemon-reload')
+
+    
+    os.system(f'sudo systemctl start {project}.service')
     
     print('gunicorn started')
     return 
@@ -129,10 +135,10 @@ events {
     server {
         listen 80;
 
-        location /static{
+        location /static {
             alias  %s;
         }
-        location /media{
+        location /media {
             alias %s;
         }
 
@@ -153,6 +159,8 @@ events {
         new_config.seek(0)
         new_config.write(new_nginx_config)
     os.system('sudo mv nginx.conf /etc/nginx/nginx.conf')
+    # change dir to the parent root to make nginx able to serve static files
+    os.chdir('..')
     os.chdir('..')
     os.system(f'sudo chown -R {user}:www-data .')
     print(os.system('sudo systemctl restart nginx'), 'starting nginx')
