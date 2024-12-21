@@ -3,7 +3,7 @@ from django.core.management.utils import get_random_secret_key
 
 
 def check_for_secrets(var_name :str) -> bool:
-
+    # check if there a vaeriable that needs to be in the .env file
     secrets = ['password', 'key']
     for value in secrets:
         if var_name != 'AUTH_PASSWORD_VALIDATORS':
@@ -12,6 +12,7 @@ def check_for_secrets(var_name :str) -> bool:
     return False
 
 def secrets(line, name, env) -> None:
+    # add secrets to the env file
     if name != 'SECRET_KEY':
         env[name] = line.value.value
     else:
@@ -22,17 +23,19 @@ def secrets(line, name, env) -> None:
     return 
 
 def debug(line)-> None:
+    # change debug to false
     line.value.value = False
     return 
 
 def allowed_hosts(line) -> None:
-
+    # change allowed hosts to * (all)
     lenght :int = len(line.value.elts)
     if lenght == 0:
         line.value = ast.List([ast.Constant('*')])
     return
 
 def template(line) -> None:
+    # adding cached template loader to the template dict
     new_keys :list = []
     new_values :list = []
     for key,value in zip(line.value.elts[0].keys, line.value.elts[0].values):
@@ -55,6 +58,7 @@ def template(line) -> None:
     return 
     
 def database(line, env :dict) -> None:
+    # checking if a database config contains a password if it is, it is moved to the .env file
     keys :list = []
     new_values :list= []
 
@@ -101,6 +105,8 @@ def change_settings(parse, env: dict) -> str:
     return ast.unparse(parse)
 
 def add_some_required(file):
+    # Add extra params needed for deployment to the settings file 
+    # import os
     import_os = ast.Import([ast.alias('os')])
     
     # Session
@@ -124,7 +130,6 @@ def add_some_required(file):
     media_url = ast.Assign(targets=[ast.Name(id='MEDIA_URL', ctx=ast.Store())],value=ast.Name('"/media/"'), lineno=1)
 
     # add logging
-
     handlers = ast.Dict([ast.Constant('file')], [ast.Dict([ast.Constant('class'), ast.Constant('filename')] , [ast.Constant('logging.FileHandler'),ast.Name("Path.joinpath(BASE_DIR, 'debug.log')")])])
 
 
