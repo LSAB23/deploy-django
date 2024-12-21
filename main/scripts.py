@@ -160,8 +160,7 @@ events {
         new_config.write(new_nginx_config)
     os.system('sudo mv nginx.conf /etc/nginx/nginx.conf')
     # change dir to the parent root to make nginx able to serve static files
-    os.chdir('..')
-    os.chdir('..')
+    os.chdir(f'{base_dir.parent.absolute()}')
     os.system(f'sudo chown -R {user}:www-data .')
     print(os.system('sudo systemctl restart nginx'), 'starting nginx')
 

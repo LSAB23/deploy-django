@@ -5,8 +5,10 @@ import ast
 import typing
 from requirement import install_requirement
 import argparse
-
-def main():
+test = False
+path = ''
+project = ''
+if not test:
     parser = argparse.ArgumentParser(description='Simple cli tool to deploy Django applications', add_help=False)
 
     parser.add_argument('Deploy')
@@ -19,6 +21,7 @@ def main():
     path :str = input_args.path
     project :str = input_args.project
 
+def main(path :str, project: str) -> None:
 
     project_path :Path = Path.joinpath(Path(path), project)
     if not Path.joinpath(project_path.absolute(), 'settings.py').exists():
@@ -72,4 +75,4 @@ def main():
 
     configure_nginx(base_dir)
 if __name__ == '__main__':
-    main()
+    main(path, project)
