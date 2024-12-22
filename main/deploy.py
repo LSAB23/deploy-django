@@ -3,23 +3,8 @@ from pathlib import Path
 import os
 import ast
 import typing
-from requirement import install_requirement
+from .requirement import install_requirement
 import argparse
-test = False
-path = ''
-project = ''
-if not test:
-    parser = argparse.ArgumentParser(description='Simple cli tool to deploy Django applications', add_help=False)
-
-    parser.add_argument('Deploy')
-    parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='                To use it just run deploy --path=folder containing your project --project= Your project name')
-    parser.add_argument('--path', required=True)#, dest='             Path to the folder which your project is')
-    parser.add_argument('--project', required=True)#, dest= '             The name of your project')
-
-    input_args = parser.parse_args(sys.argv)
-
-    path :str = input_args.path
-    project :str = input_args.project
 
 def main(path :str, project: str) -> None:
 
@@ -45,13 +30,13 @@ def main(path :str, project: str) -> None:
     base_dir = Path(path)
 
     try:
-        from scripts import create_env, create_settings, configure_gunicorn, make_migrations, collectstatic, configure_nginx
-        from utils import change_settings
+        from .scripts import create_env, create_settings, configure_gunicorn, make_migrations, collectstatic, configure_nginx
+        from .utils import change_settings
         
     except ImportError:
         install_requirement(path)
-        from scripts import create_env, create_settings, configure_gunicorn, make_migrations, collectstatic, configure_nginx
-        from utils import change_settings
+        from .scripts import create_env, create_settings, configure_gunicorn, make_migrations, collectstatic, configure_nginx
+        from .utils import change_settings
         
 
     os.chdir(project_path)
@@ -75,4 +60,19 @@ def main(path :str, project: str) -> None:
 
     configure_nginx(base_dir)
 if __name__ == '__main__':
+    test = False
+    path = ''
+    project = ''
+    if not test:
+        parser = argparse.ArgumentParser(description='Simple cli tool to deploy Django applications', add_help=False)
+
+        parser.add_argument('Deploy')
+        parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='                To use it just run deploy --path=folder containing your project --project= Your project name')
+        parser.add_argument('--path', required=True)#, dest='             Path to the folder which your project is')
+        parser.add_argument('--project', required=True)#, dest= '             The name of your project')
+
+        input_args = parser.parse_args(sys.argv)
+
+        path :str = input_args.path
+        project :str = input_args.project
     main(path, project)

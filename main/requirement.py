@@ -16,7 +16,7 @@ def install_requirement(path):
         subprocess.run('pip install gunicorn'.split(), check=True)
 
         # install nginx
-        subprocess.run('sudo apt install nginx'.split(), check=True)
+        subprocess.run('sudo apt install nginx -y'.split(), check=True)
     except subprocess.CalledProcessError as e:
         raise DownloadingRequirementError('check and fix error with pip it has to be done manually  this stackoverflow link could help https://stackoverflow.com/questions/75089137/error-failed-building-wheel-for-twisted-iocpsupport')
 

@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from utils import check_for_secrets, debug, secrets, allowed_hosts, template, add_some_required, database
+from .utils import check_for_secrets, debug, secrets, allowed_hosts, template, add_some_required, database
 import getpass
 import ast
 
@@ -161,6 +161,7 @@ events {
     os.system('sudo mv nginx.conf /etc/nginx/nginx.conf')
     # change dir to the parent root to make nginx able to serve static files
     os.chdir(f'{base_dir.parent.absolute()}')
+    os.chdir('..')
     os.system(f'sudo chown -R {user}:www-data .')
     print(os.system('sudo systemctl restart nginx'), 'starting nginx')
 
