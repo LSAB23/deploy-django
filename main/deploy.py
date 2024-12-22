@@ -16,9 +16,10 @@ def main(path :str, project: str) -> None:
 
     get_settings :Path= Path.joinpath(project_path.absolute(), 'settings.py')
 
-
     open_settings :typing.TextIO= open(get_settings, 'r')
     parse = ast.parse(open_settings.read())
+    # close settings
+    open_settings.close()
 
 
     env = {}
@@ -41,9 +42,7 @@ def main(path :str, project: str) -> None:
 
     os.chdir(project_path)
     # create settings
-    settings = change_settings(parse, env)
-    create_settings(settings)
-
+    create_settings(change_settings(parse, env))
     # create env
     create_env(env)
 
