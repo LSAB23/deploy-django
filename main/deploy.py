@@ -3,7 +3,7 @@ from pathlib import Path
 import os
 import ast
 import typing
-from .requirement import install_requirement
+from main.requirement import install_requirement
 import argparse
 
 def main(path :str, project: str) -> None:
@@ -31,13 +31,13 @@ def main(path :str, project: str) -> None:
     base_dir = Path(path)
 
     try:
-        from .scripts import create_env, create_settings, configure_gunicorn, make_migrations, collectstatic, configure_nginx
-        from .utils import change_settings
+        from scripts import create_env, create_settings, configure_gunicorn, make_migrations, collectstatic, configure_nginx
+        from utils import change_settings
         
     except ImportError:
         install_requirement(path)
-        from .scripts import create_env, create_settings, configure_gunicorn, make_migrations, collectstatic, configure_nginx
-        from .utils import change_settings
+        from main.scripts import create_env, create_settings, configure_gunicorn, make_migrations, collectstatic, configure_nginx
+        from main.utils import change_settings
         
 
     os.chdir(project_path)

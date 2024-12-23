@@ -2,6 +2,7 @@
 1. cd path/to/your/folder containing your project (There should be requirements.txt in the folder for pip to install)
 
 2. `` sudo apt update -y && sudo apt upgrade -y && sudo apt install python3-venv -y && python3 -m venv venv && source venv/bin/activate && pip install deploy-django ``
+* note venv should be created in the path above 
 
 4. python3 -m deploy --path=path/to/your/folder containing your project --project=Project Name
 

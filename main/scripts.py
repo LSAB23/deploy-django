@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from .utils import check_for_secrets, debug, secrets, allowed_hosts, template, add_some_required, database
+from main.utils import check_for_secrets, debug, secrets, allowed_hosts, template, add_some_required, database
 import getpass
 import ast
 
