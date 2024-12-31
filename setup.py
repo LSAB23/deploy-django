@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.2' #to be changed during every deployment
+VERSION = '0.0.10' #to be changed during every deployment
 
 setup(
     name='deploy-django',

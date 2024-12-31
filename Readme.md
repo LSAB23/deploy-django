@@ -1,10 +1,10 @@
 # How to use it
-1. cd path/to/your/folder containing your project (There should be requirements.txt in the folder for pip to install)
+1. cd path/to/your/project folder containing your apps (There should be requirements.txt in the folder for pip to install)
 
 2. `` sudo apt update -y && sudo apt upgrade -y && sudo apt install python3-venv -y && python3 -m venv venv && source venv/bin/activate && pip install deploy-django ``
 * note venv should be created in the path above 
 
-3. ``python3 -m deploy --path=path/to/your/folder containing (project, venv and requirements.txt) --project=Project Name``
+3. ``python3 -m deploy --path=path/to/your/project folder containing your apps (There should be requirements.txt in the folder for pip to install) --project=Project Name``
 
 
 # Requirements
