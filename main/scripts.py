@@ -136,10 +136,10 @@ events {
         listen 80;
 
         location /static {
-            alias  %s;
+            root  %s;
         }
         location /media {
-            alias %s;
+            root %s;
         }
 
         location / {
